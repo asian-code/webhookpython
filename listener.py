@@ -1,33 +1,24 @@
 from flask import Flask, request, abort
-import subprocess
+import os
 
 # import json
 
 app = Flask(__name__)
 
-@app.route('/work', methods=['POST'])
+@app.route('/work/freshdesk-auth-tool', methods=['POST'])
 def work():
-    print('WOOOHOOOOO')
-    data=request.json
-    print(data)
-    if request.method == 'POST':#'POST':
-        
-        #check for what program to run
-        if (data["name"]=="freshdesk-auth-tool"):
-            print("Running freshdesk-auth-tool ")
-            # Run another Python script and capture the output
-            # result = subprocess.run(['python3', '/home/eric/Downloads/FreshdeskReAuthChecker.py'], capture_output=True)
-            # print(result.stdout)
+    print('Running FD auth tool...')
+    os.system('python3 /home/eric/Downloads/FreshdeskReAuthChecker.py')
+    return 'success', 200
 
-        elif (data["name"]=="create VM"):
-            print("VM WOOOHOOO")
-            print("data: "+request.json)
-        return 'success', 200
-    else:
-        print(request.json)
-        print('HEHEHEHEHEHEHEHEHHEEH')
-        abort(400)
-    print('END of function')
+@app.route('/work', methods=['POST'])
+def test():
+    print("got it from /work YAY")
+    data=request.json
+    print(request.get_json())
+    if (data["name"]=="freshdesk-auth-tool"):
+        print('IT WORKS --------------------------------------------')
+    return 'success', 200
 if __name__ == '__main__':
     app.run()
 
